@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1><span id="userinfo"></span>
+    <p>Welcome to <%= title %></p>
+  </body>
+<script type="text/javascript">
+  if("<%=user %>")
+  {
+      document.getElementById('userinfo').innerHTML="欢迎回来："+user.username;
+  }
+</script>
+</html>
