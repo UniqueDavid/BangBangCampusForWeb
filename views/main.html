@@ -44,6 +44,7 @@
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button);
+
     </script>
     <!-- Bootstrap 3.3.6 -->
     <script src="bootstrap/js/bootstrap.min.js"></script>
@@ -147,22 +148,147 @@
             </h1>
         </section>
         <section class="content">
-                    <div class="box">
-                        <div class="box-header">
-                            <div class="box-title">用户信息列表</div>
-                        </div>
-                        <div class="box-body">
-                            <div id="toolbar">
-                                <button class="btn btn-primary">
-                                    <i class="ion-person-add"></i> 新增用户
-                                </button>
-                                <button id="remove"  class="btn btn-danger">
-                                    <i class="ion-android-delete"></i> 批量删除用户
-                                </button>
+            <div class="box">
+                <div class="box-header">
+                    <div class="box-title">用户信息列表</div>
+                </div>
+                <div class="box-body">
+                    <div id="toolbar">
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#addmodal">
+                            <i class="ion-person-add"></i> 新增用户
+                        </button>
+                        <!--模态框定义-->
+                        <div class="modal fade" id="addmodal" tabindex="-1" role="dialog" aria-labelledby="新增用户" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">×
+                                        </button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            新增用户
+                                        </h4>
+                                    </div>
+                                    <!--此处写新增用户的布局-->
+                                    <div class="modal-body">
+                                        <div class="box">
+                                            <form class="form-horizontal" action="/addNewUser" method="post">
+                                                <div class="box-body">
+                                                    <div class="form-group">
+                                                        <label for="usernickname" class="col-sm-2 control-label">昵称</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="usernickname" name="usernickname" type="text" class="form-control" placeholder="输入昵称">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userpassword" class="col-sm-2 control-label">密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userpassword" name="userpassword" type="password" class="form-control" placeholder="输入密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="ensurepassword" class="col-sm-2 control-label">确认密码</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="ensurepassword" name="ensureuserpassword"type="password" class="form-control" placeholder="再次输入密码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">性别</label>
+                                                        <div class="col-sm-8" >
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="usersex" value="male" checked>男
+                                                            </label>
+                                                            <label class="radio-inline">
+                                                                <input type="radio" name="usersex" value="female">女</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">头像</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="file" id="useravatar" name="useravatar">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-2 control-label">出生日期</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="date"  class="form-control" id="userbirth" name="userbirth">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userphone" class="col-sm-2 control-label">电话</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userphone" name="userphone" type="tel" class="form-control" placeholder="输入电话号码">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="useraddress" class="col-sm-2 control-label">联系地址</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="useraddress" name="useraddress" type="text" class="form-control" placeholder="输入联系地址">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userschool" class="col-sm-2 control-label">大学</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userschool" name="userschool" type="text" class="form-control" placeholder="输入大学">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userorganization" class="col-sm-2 control-label">社团</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userorganization" name="userorganization" type="text" class="form-control" placeholder="输入社团">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="userfocus" class="col-sm-2 control-label">关注事物</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userfocus" name="userfocus" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">标签</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userlabel" name="userlabel" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">兴趣</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userfavor" name="userfavor" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">技能</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="userskill" name="userskill" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label  class="col-sm-2 control-label">安全问答</label>
+                                                        <div class="col-sm-8">
+                                                            <input id="usersafequestion" name="usersafequestion" type="text" class="form-control" placeholder="请以逗号隔开">
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                            </form>
+                                    <div class="modal-footer">
+                                        <button type="reset" class="btn btn-default"
+                                                data-dismiss="modal">
+                                            取消注册
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            确认注册
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <table id="user-info"></table>
-                        </div>
+                                </div></div></div>
+                        <button id="remove"  class="btn btn-danger" disabled>
+                            <i class="ion-android-delete"></i> 批量删除用户
+                        </button>
                     </div>
+                    <table id="user-info"></table>
+                </div>
+            </div>
         </section>
     </div>
     <footer class="main-footer">
@@ -187,10 +313,10 @@
             queryParams: null,//传递参数（*）
             search: true,
             strictSearch: true,
-            showColumns: false,                  //是否显示所有的列
+            showColumns: true,                  //是否显示所有的列
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
-            clickToSelect: true,                //是否启用点击选中行
+            clickToSelect: false,                //是否启用点击选中行
             height: 500,
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
@@ -235,15 +361,9 @@
             }, {
                 field: 'operate',
                 title: '基本操作',
-                formatter:function (value,row,index) {
-                    return [
-                        '<a class="like" href="javascript:void(0)" title="Like">',
-                        '<i class="glyphicon glyphicon-heart"></i>',
-                        '</a>  ',
-                        '<a class="remove" href="javascript:void(0)" title="Remove">',
-                        '<i class="glyphicon glyphicon-remove"></i>',
-                        '</a>'
-                    ].join('');
+                formatter: function(value, row, index) {
+                        var r='<a class="remove" href="#"  title="Remove" onclick="onRemove(\''+row.userId+'\')">删除用户</a>';
+                        return r;
                 }
             }]
         });
@@ -252,10 +372,10 @@
             selections = getIdSelections();
         });
         $('#remove').click(function () {
-            var usernames = getIdSelections();
+            var userId = getIdSelections();
             $('#user-info').bootstrapTable('remove', {
-                field: 'username',
-                values: usernames
+                field: 'userId',
+                values: userId
             });
             $('#remove').prop('disabled', true);
         });
@@ -266,9 +386,17 @@
         });
         function getIdSelections() {
             return $.map($('#user-info').bootstrapTable('getSelections'), function (row) {
-                return row.username
+                return row.userId;
             });
         }
+
+      function onRemove(userId) {
+          $('#user-info').bootstrapTable('remove', {
+                   field: 'userId',
+                   values: [parseInt(userId)]
+               });
+           }
+
     </script>
 </div>
 </body>

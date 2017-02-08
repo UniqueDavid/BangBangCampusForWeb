@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoDao=require('../mongoDao/mongoDao');
+var AddBangBangUser=require('../mongoDao/AddBangBangUser');
 var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -22,5 +23,10 @@ router.post('/GetUserInfo',function (req,res) {
 });
 router.get('/main',function (req,res) {
     res.render('main');
+});
+
+//新增用户
+router.post('/addNewUser',function (req,res) {
+   var result=AddBangBangUser.addBangBangUser(req.body.usernickname,req.body.userpassword,req.body.usersex,req.body.useravatar,new Date(req.body.userbirth).getTime(),parseInt(req.body.userphone),req.body.useraddress,req.body.userschool,req.body.userorganization,1,[req.body.userfocus],[req.body.userlabel],[req.body.userfavor],[req.body.userskill],1,{question:req.body.usersafequestion,answer:'ok'},'一颗星',0,[],[],0,0);
 });
 module.exports = router;
