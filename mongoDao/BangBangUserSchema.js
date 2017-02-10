@@ -17,22 +17,64 @@ var BangBangSchema=new Schema({
     userAddress:String,
     userSchool:String,
     userOrganization:String,
-    userLevel:Number,
-    userFocus:[String],
-    userLabel:[String],
-    userFavor:[String],
-    userSkill:[String],
-    userStatus:Number,
-    userSafeQuestion:{
-        question:String,
-        answer:String
+    userLevel:{
+        type:Number,
+        default:1
     },
-    userReputation:String,
-    userCredit:Number,
-    userFans:[String],
-    userFollow:[String],
-    userBangBiValue:Number,
-    userBonus:Number
+    userFocus:{
+        type:[String],
+        default:[""]
+    },
+    userLabel:{
+        type:[String],
+        default:[""]
+    },
+    userFavor:{
+        type:[String],
+        default:[""]
+    },
+    userSkill:{
+        type:[String],
+        default:[""]
+    },
+    userStatus:{
+        type:Number,
+        default:1
+    },
+    userSafeQuestion:{
+        question:{
+            type:String,
+            default:""
+        },
+        answer:{
+            type:String,
+            default:""
+        },
+    },
+    userReputation:{
+        type:String,
+        default:"一颗星"
+    },
+    userCredit:{
+        type:Number,
+        default:0
+    },
+    userFans:{
+        type:[String],
+        default:[""]
+    },
+    userFollow:{
+        type:[String],
+        default:[""]
+    },
+    userBangBiValue:{
+        type:Number,
+        default:0
+    },
+    userBonus:{
+        type:Number,
+        default:0
+    },
 });
 //生成model
 module.exports=mongoose.model("BangBangUserModel",BangBangSchema,"BangBangUserInfo");
