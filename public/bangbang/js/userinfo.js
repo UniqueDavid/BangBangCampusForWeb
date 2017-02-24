@@ -3,7 +3,7 @@ var userinfo=$('#user-info');
 //初始化bootstrap-table
 userinfo.bootstrapTable({
     dataType: 'json',
-    url: 'http://localhost:3002/GetUserInfo',         //请求后台的URL（*）
+    url: 'http://localhost:3002/GetAllUserInfo',         //请求后台的URL（*）
     method: 'POST',                      //请求方式（*）
     toolbar: '#toolbar',                //工具按钮用哪个容器
     striped: true,                      //是否显示行间隔色
@@ -46,7 +46,8 @@ userinfo.bootstrapTable({
         title: '性别'
     }, {
         field: 'userBirth',
-        title: '出生日期'
+        title: '出生日期',
+        formatter:formatDate
     }, {
         field: 'userPhone',
         title: '电话'
@@ -93,11 +94,20 @@ userinfo.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.t
 });
 $('#remove').click(function () {
     var userId = getIdSelections();
-    userinfo.bootstrapTable('remove', {
-        field: 'userId',
-        values: userId
-    });
-    $('#remove').prop('disabled', true);
+    if(confirm("确认删除这些用户，注意不可以恢复!！")){
+        var userIds=userId.join(",");
+        $.post("deleteCheckedUser",{userIds:userIds},function (result) {
+            if(result)
+            {
+                userinfo.bootstrapTable('remove', {
+                    field: 'userId',
+                    values: userId
+                });
+                $('#remove').prop('disabled', true);
+            }
+        });
+    }
+
 });
 $(window).resize(function () {
     userinfo.bootstrapTable('resetView', {
@@ -123,19 +133,34 @@ function submitinfo() {
     });
     $("#addmodal").modal("hide");
 }
-
+//日期格式化
+function formatDate(value,index,row) {
+    var date=new Date(value);
+    return date.toLocaleString();
+}
 //更新用户
 function alteruser() {
-    $.post("alterNewUser",$("#alterUserForm").serialize(),function (result) {
-        alert(result);
+    var alterUserForm=$("#alterUserForm");
+    alterUserForm.data("bootstrapValidator").validate();
+    if(!alterUserForm.data("bootstrapValidator").isValid()){
+        return;
+    }
+    $.post("alterNewUser",alterUserForm.serialize(),function (result) {
+        if(result)
+            alert("修改用户成功！");
+        else
+             alert("修改用户失败！")
     });
     $("#altermodal").modal("hide");
 }
 //删除用户
 function onRemove(userId) {
-    $('#user-info').bootstrapTable('remove', {
-        field: 'userId',
-        values: [parseInt(userId)]
+    $.post("deleteUser",{userId:userId},function (result) {
+        if(result)
+            $('#user-info').bootstrapTable('remove', {
+                field: 'userId',
+                values: [parseInt(userId)]
+            });
     });
 }
 //点击修改用户按钮，自动填充模态框
@@ -149,7 +174,7 @@ function onAlter(userId) {
         success:function(result){
             $("#userid").val(userId);
             $("#alterusernickname").val(result[0].userNickName);
-            $("#alteruserpassword").val(result[0].userPassword);
+            $("#olduserpassword").val(result[0].userPassword);
             //设置勾选框
             var radioValue=result[0].userSex;
             if("male"==radioValue)
@@ -157,7 +182,7 @@ function onAlter(userId) {
             else
                 $("#radiofemale").attr("checked",true);
             $("#alteruseravatar").val(result[0].userAvatar);
-            var birthday=new Date(parseInt(result[0].userBirth)*1000);
+            var birthday=new Date(result[0].userBirth);
             //格式化日期
             var year=birthday.getFullYear();
             var month=birthday.getMonth();
@@ -180,7 +205,8 @@ function onAlter(userId) {
         }
     });
 }
-//设置表单格式
+
+//设置添加用户表单格式
 $("#addUserForm").bootstrapValidator({
     message:"提交数据不能全部为空！！",
     feedbackIcons: {
@@ -196,9 +222,167 @@ $("#addUserForm").bootstrapValidator({
                     message:"昵称不能为空！"
                 },
                 stringLength:{
-                    min:6,
+                    min:3,
                     max:12,
-                    message:"昵称长度必须在6到12位之间"
+                    message:"昵称长度必须在3到12位之间"
+                },
+                regexp:{
+                    regexp:/^([a-zA-Z0-9]|[\u4E00-\u9FA5])+$/,
+                    message:"昵称只能包含大写、小写、数字和汉字"
+                }
+            }
+        },
+        userpassword:{
+            message:"密码验证失败！",
+            validators: {
+                notEmpty: {
+                    message: "密码不能为空！"
+                },
+                stringLength: {
+                    min: 6,
+                    max: 20,
+                    message: "密码长度必须在6到20位之间"
+                }
+            }
+        },
+        ensureuserpassword: {
+            message: "确认密码验证失败！",
+            validators: {
+                notEmpty: {
+                    message: "确认密码不能为空！"
+                },
+                identical: {
+                    field: "userpassword",
+                    message: "两次密码输入不一致！"
+                }
+            }
+        },
+        useravatar:{
+            message:"头像路径验证失败！",
+            validators:{
+                notEmpty:{
+                    message:"头像路径不能为空！"
+                }
+            }
+        },
+        userbirth:{
+            message:"出生日期验证失败！",
+            validators:{
+                notEmpty:{
+                    message:"出生日期不能为空！"
+                }
+            }
+        },
+        userphone:{
+            message:"电话号码验证失败！",
+            validators:{
+                notEmpty:{
+                    message:"电话号码不能为空！"
+                },
+                stringLength:{
+                    min:11,
+                    max:11,
+                    message:"请填写11位的手机号码！"
+                },
+                regexp:{
+                    regexp:/^1\d{10}$/,
+                    message:"请输入11位的手机号码！！"
+                }
+            }
+        }
+//                useraddress:{
+//                      message:"地址验证失败！",
+//                      validators:{
+//                          notEmpty:{
+//                              message:"地址不能为空！"
+//                          }
+//                      }
+//                },
+//                userschool:{
+//                    message:"大学验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"大学不能为空！"
+//                        }
+//                    }
+//                },
+//                userorganization:{
+//                    message:"社团验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"社团不能为空！"
+//                        }
+//                    }
+//                },
+//                userfocus:{
+//                    message:"关注事物验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"关注事物不能为空！"
+//                        }
+//                    }
+//                },
+//                userlabel:{
+//                    message:"标签验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"标签不能为空！"
+//                        }
+//                    }
+//                },
+//                userfavor:{
+//                    message:"兴趣验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"兴趣不能为空！"
+//                        }
+//                    }
+//                },
+//                userskill:{
+//                    message:"技能验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"技能不能为空！"
+//                        }
+//                    }
+//                },
+//                usersafequestion:{
+//                    message:"安全问题验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"安全问题不能为空！"
+//                        }
+//                    }
+//                },
+//                usersafeanswer:{
+//                    message:"安全回答验证失败！",
+//                    validators:{
+//                        notEmpty:{
+//                            message:"安全回答不能为空！"
+//                        }
+//                    }
+//                }
+
+    }
+});
+$("#alterUserForm").bootstrapValidator({
+    message:"提交数据不能全部为空！！",
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields:{
+        usernickname:{
+            message:"用户名验证失败！",
+            validators:{
+                notEmpty:{
+                    message:"昵称不能为空！"
+                },
+                stringLength:{
+                    min:3,
+                    max:12,
+                    message:"昵称长度必须在3到12位之间"
                 },
                 regexp:{
                     regexp:/^([a-zA-Z0-9]|[\u4E00-\u9FA5])+$/,

@@ -1,5 +1,5 @@
-//整个封装为了完成用户ID自增后再进行用户的插入操作
-var mongoose=require('../conf/db'),
+//此处是增加一个用户操作，由于自增ID必须同步执行，此处单独封装
+var mongoose=require('../../conf/db'),
     Schema=mongoose.Schema;
 var BangBangUserModel=require('./BangBangUserSchema');
 var UserIdSchema=new Schema({

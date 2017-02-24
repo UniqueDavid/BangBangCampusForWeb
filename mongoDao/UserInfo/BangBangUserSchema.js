@@ -4,7 +4,7 @@
 /**
  * 帮帮客户端的用户信息模式
  */
-var mongoose=require('../conf/db'),
+var mongoose=require('../../conf/db'),
     Schema=mongoose.Schema;
 var BangBangSchema=new Schema({
     userId:Number,

@@ -31,7 +31,9 @@
     <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+
     <link rel="stylesheet" href="bootstrap/css/bootstrapValidator.min.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -77,13 +79,16 @@
     <script src="dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="dist/js/demo.js"></script>
+
     <!--表单验证-->
     <script src="bootstrap/js/bootstrapValidator.min.js"></script>
+
+
 </head>
 
 <body class="hold-transition skin-green sidebar-mini">
 <div class="wrapper">
-    <header class="main-header"><a href="main.html" class="logo">
+    <header class="main-header"><a href="UserInfoPage.html" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini">Bang</span>
         <!-- logo for regular state and mobile devices -->
@@ -108,15 +113,15 @@
             <ul class="sidebar-menu">
                 <li class="header">导航栏</li>
 
-                <li class="treeview">
+                <li class="treeview active">
                     <a href="#"><i class="fa fa-dashboard"></i><span>用户管理</span><span class="pull-right-container"> <i
                             class="fa fa-angle-left pull-right"></i> </span></a>
-                    <ul class="treeview-menu">
-                        <li class="active"><a href="#"><i class="fa fa-info"></i> 用户信息管理</a></li>
-                        <li><a href="#"><i class="fa fa-compass"></i>用户技能管理</a></li>
+                    <ul class="treeview-menu" style="display:block">
+                        <li class="active"><a href="UserInfoPage"><i class="fa fa-info"></i> 用户信息管理</a></li>
+                        <li><a href="UserSkillPage"><i class="fa fa-compass"></i>用户技能管理</a></li>
                         <li><a href="#"><i class="fa fa-signal"></i>用户状态管理</a></li>
                         <li><a href="#"><i class="fa fa-rocket"></i>用户权力管理</a></li>
-                        <li><a href="#"><i class="fa fa-certificate"></i>用户身份审核</a></li>
+                        <li><a href="UserIdentityPage"><i class="fa fa-certificate"></i>用户身份审核</a></li>
                     </ul>
                 </li>
 
@@ -124,7 +129,7 @@
                     <a href="#"><i class="fa fa-database"></i><span>内容管理</span><span class="pull-right-container"> <i
                             class="fa fa-angle-left pull-right"></i> </span></a>
                     <ul class="treeview-menu">
-                        <li class="active"><a href="#"><i class="fa fa-registered"></i>订单审核</a></li>
+                        <li class="active"><a href="UserOrderPage"><i class="fa fa-registered"></i>订单审核</a></li>
                         <li><a href="#"><i class="fa fa-comment"></i>评价审核</a></li>
                     </ul>
                 </li>

@@ -42,12 +42,31 @@ module.exports.alterBangBangUserInfo=function (req,res) {
         userSkill:[req.body.userskill],
         userSafeQuestion:{question:req.body.usersafequestion,answer:req.body.usersafeanswer}}},function (err,result) {
         if(!err&&result!=''){
-            res.json(result);
+            res.send(result);
         }else
             throw err;
     });
 };
-
+//删除用户
+module.exports.deleteBangBangUserInfo=function (req,res) {
+    console.log(req.body);
+    BangBangUserModel.remove({userId:req.body.userId},function (err,result) {
+        if(!err&&result!=''){
+            res.send(result);
+        }else
+            throw err;
+    });
+};
+//批量删除用户
+module.exports.deleteCheckedBangBangUserInfo=function (req,res) {
+    var userIds=req.body.userIds.split(",");
+    BangBangUserModel.remove({userId:{$in:userIds}},function (err,result) {
+        if(!err&&result!=''){
+            res.send(result);
+        }else
+            throw err;
+    });
+};
 //新增一个用户
 
 module.exports.findBangBangUserInfo=function (findUserNickName) {

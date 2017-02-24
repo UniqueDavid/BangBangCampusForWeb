@@ -1,5 +1,5 @@
 //后台管理系统的登录用户Schema
-var mongoose=require('../conf/db'),
+var mongoose=require('../../conf/db'),
     Schema=mongoose.Schema;
 var CmsUserSchema=new Schema({
     username:String,
